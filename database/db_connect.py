@@ -126,21 +126,18 @@ def update_status(id: int, status: str):
                 print(f'Failed to update task {id}')
                 return None
 
-def delete_tasks(ids: List[int]):
+def delete_tasks(id: int):
     with connect() as conn:
         with conn.cursor() as cursor:
-            print(f'Attempt to delete tasks {ids}')
+            print(f'Attempt to delete tasks {id}')
             delete_query = """
                 DELETE FROM tasks
                 WHERE id=?
             """
             try:
-                deleted = []
-                for id in ids:
-                    cursor.execute(delete_query, (id,))
-                    conn.commit()
-                    deleted.append(id)
-                return deleted
+                cursor.execute(delete_query, (id,))
+                conn.commit()
+                return True
             except Exception as e:
                 print("Failed to delete!")
                 return False

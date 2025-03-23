@@ -52,11 +52,11 @@ def modify_status(response: Response, id: int, task_status: str):
         return {"Status": "Failed to update status"}
 
 @router.delete(path="/task", tags=["Task"])
-def delete_task(response: Response, ids: List[int] = Query(None, description="Id to delete")):
-    success = delete_tasks(ids)
+def delete_task(response: Response, id: int = Query(None, description="Id to delete")):
+    success = delete_tasks(id)
     if success:
         response.status_code = status.HTTP_200_OK
-        return {"Status" : f"Successfully deleted tasks {success}"}
+        return {"Status": f"Successfully deleted tasks."}
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {"Status": "Failed to delete."}
