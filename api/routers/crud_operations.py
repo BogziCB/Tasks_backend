@@ -11,7 +11,7 @@ router = APIRouter()
 @router.get(path="/task", tags=["Task"])
 def fetch_task(response: Response):
     data = fetch_data()
-    if data:
+    if data or data == []:
         response.status_code = status.HTTP_200_OK
         return data
     else:
