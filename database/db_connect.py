@@ -78,7 +78,7 @@ def add_task(task: Task):
             print('Attempt to store task into DB.')
             insert_query = """
                 INSERT INTO tasks(name, description,status)
-                VALUES(?,?,"To do")
+                VALUES(?,?,"to do")
             """
             try:
                 cursor.execute(insert_query, (task.name, task.description))
@@ -99,9 +99,12 @@ def update_task(id: int, task: Task):
                 WHERE id = ?;
             """
             try:
-                cursor.execute(update_query, (task.name, task.description, id))
-                conn.commit()
-                return True
+                if task.status == 'to do' or task.status == 'in progress' or task.status == 'done':
+                    cursor.execute(update_query, (task.name, task.description, id))
+                    conn.commit()
+                    return True
+                else:
+                    return "Forbidden"
             except Exception as e:
                 print(f'Failed to update task {id}')
                 return None

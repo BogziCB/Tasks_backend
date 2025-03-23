@@ -31,9 +31,12 @@ def create_task(response: Response, task: Task):
 @router.put(path="/task", tags=["Task"])
 def modify_task(response: Response, id: int, task: Task):
     success = update_task(id, task)
-    if success:
-        response.status_code = status.HTTP_200_OK
-        return {"Status": "Updated"}
+    if success == 'Forbidden':
+        response.status_code = status.HTTP_403_FORBIDDEN
+        return {"Status": "Forbidden status, insert 'done', 'in progress' or 'to do'"}
+    elif success:
+        response.status_code = status.HTTP_201_CREATED
+        return {"Status": "Success"}
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return {"Status": "Failed"}
