@@ -1,0 +1,6 @@
+mariadb
+uvicorn
+fastapi
+starlette
+pydantic
+dotenv
