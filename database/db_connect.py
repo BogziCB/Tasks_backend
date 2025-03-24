@@ -56,6 +56,32 @@ def fetch_data():
             except Exception as e:
                 print("Failed!")
                 return False
+
+def fetch_data_id(id: int):
+    with connect() as conn:
+        with conn.cursor() as cursor:
+            content = []
+            select_data ="""
+                SELECT id, name, description, status
+                FROM tasks
+                WHERE id = ?
+            """
+            try:
+                cursor.execute(select_data, (id,))
+                for(id, name, description, status) in cursor:
+                    result = {
+                        "id": id,
+                        "name": name,
+                        "description": description,
+                        "status": status
+                    }
+                    content.append(result)
+                print("Data fetched")
+                return content
+            except Exception as e:
+                print("Failed!")
+                return False
+
 def create_table():
     with connect() as conn:
         with conn.cursor() as cursor:

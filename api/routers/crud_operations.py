@@ -4,13 +4,23 @@ from fastapi import APIRouter, Query, Response
 from starlette import status
 
 from api.response_model import Task
-from database.db_connect import add_task, update_task, update_status, delete_tasks, fetch_data
+from database.db_connect import add_task, update_task, update_status, delete_tasks, fetch_data, fetch_data_id
 
 router = APIRouter()
 
 @router.get(path="/task", tags=["Task"])
 def fetch_task(response: Response):
     data = fetch_data()
+    if data or data == []:
+        response.status_code = status.HTTP_200_OK
+        return data
+    else:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {"Status": {"Internal server error!"}}
+
+@router.get(path="/task/{id}", tags=["Task"])
+def fetch_task(response: Response, id: int):
+    data = fetch_data_id(id)
     if data or data == []:
         response.status_code = status.HTTP_200_OK
         return data
